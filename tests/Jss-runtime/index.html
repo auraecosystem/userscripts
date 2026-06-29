@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Custom JSS Style Script - Enhanced</title>
+  <!-- Load JSS from CDN -->
+  <script src="https://unpkg.com/jss@10.10.0/dist/jss.min.js"></script>
+</head>
+<body>
+  <button id="myButton" aria-label="Custom styled button">Click Me</button>
+
+  <script>
+    try {
+      // Ensure JSS is loaded
+      if (!window.jss) {
+        throw new Error("JSS library failed to load.");
+      }
+
+      const jssInstance = jss.default;
+
+      // Define initial styles
+      const styles = {
+        myButton: {
+          background: 'linear-gradient(45deg, #4CAF50, #81C784)',
+          color: '#fff',
+          padding: '12px 28px',
+          border: 'none',
+          borderRadius: '8px',
+          fontSize: '16px',
+          cursor: 'pointer',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            background: 'linear-gradient(45deg, #388E3C, #66BB6A)'
+          },
+          '&:active': {
+            transform: 'scale(0.97)'
+          }
+        }
+      };
+
+      // Create and attach stylesheet
+      const { classes } = jssInstance.createStyleSheet(styles).attach();
+
+      // Apply styles to button
+      const button = document.getElementById('myButton');
+      if (!button) {
+        throw new Error("Button element not found.");
+      }
+      button.className = classes.myButton;
+
+      // Example: Dynamically update styles after 3 seconds
+      setTimeout(() => {
+        styles.myButton.background = 'linear-gradient(45deg, #2196F3, #21CBF3)';
+        styles.myButton['&:hover'].background = 'linear-gradient(45deg, #1976D2, #00BCD4)';
+        jssInstance.createStyleSheet(styles).attach();
+        console.log("Button style updated dynamically!");
+      }, 3000);
+
+    } catch (err) {
+      console.error("Error applying JSS styles:", err.message);
+    }
+  </script>
+</body>
+</html>
