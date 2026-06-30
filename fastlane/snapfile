@@ -1,0 +1,31 @@
+# fastlane/Snapfile
+# Aura Playground Screenshot Configuration
+
+output_directory "./fastlane/screenshots"
+
+scheme ENV.fetch(
+  "SNAP_SCHEME",
+  "AuraPlayground-iOS"
+)
+
+devices([
+  "iPhone 16 Pro",
+  "iPhone 16 Pro Max",
+  "iPad Pro (13-inch) (M4)"
+])
+
+languages([
+  "en-US"
+])
+
+clear_previous_screenshots true
+
+override_status_bar true
+
+dark_mode false
+
+stop_after_first_error true
+
+erase_simulator true
+
+reinstall_app true
