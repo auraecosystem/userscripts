@@ -1,4 +1,4 @@
-// file: proxy.meta.js
+// file: proxy.meta.jss
 const target = { message: "Hello" };
 
 const handler = {
