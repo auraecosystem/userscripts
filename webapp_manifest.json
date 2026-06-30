@@ -2,7 +2,6 @@
   "id": "/",
   "name": "web4 Web Docs",
   "short_name": "web4",
-  "description": "Documentation and developer resources for the web4 ecosystem.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -13,12 +12,6 @@
   "theme_color": "#0B0F19",
   "background_color": "#0B0F19",
   "orientation": "portrait-primary",
-  "lang": "en",
-  "categories": [
-    "developer",
-    "education",
-    "productivity"
-  ],
   "icons": [
     {
       "src": "/favicon-192x192.png",
