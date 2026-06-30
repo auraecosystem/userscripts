@@ -1,0 +1,325 @@
+/* =========================================================
+   web4 Glass Theme
+   ========================================================= */
+
+:root{
+    --bg:#0B0F19;
+    --surface:rgba(255,255,255,.08);
+    --surface-hover:rgba(255,255,255,.14);
+    --border:rgba(255,255,255,.18);
+
+    --text:#ffffff;
+    --text-secondary:#d1d5db;
+
+    --primary:#4F46E5;
+    --secondary:#06B6D4;
+
+    --blur:28px;
+    --radius:22px;
+
+    --shadow:
+        0 10px 40px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.18);
+
+    --transition:.25s ease;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+
+    background:
+        radial-gradient(circle at 15% 20%, #4F46E5 0%, transparent 35%),
+        radial-gradient(circle at 80% 75%, #06B6D4 0%, transparent 40%),
+        linear-gradient(180deg,#090A11,#0F172A);
+
+    overflow-x:hidden;
+}
+
+/* ===========================
+   Glass Surface
+=========================== */
+
+.glass{
+    background:var(--surface);
+
+    backdrop-filter:blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter:blur(var(--blur)) saturate(180%);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    transition:all var(--transition);
+}
+
+.glass:hover{
+    background:var(--surface-hover);
+    transform:translateY(-2px);
+}
+
+/* ===========================
+   Navigation
+=========================== */
+
+.navbar{
+    position:fixed;
+
+    top:16px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:min(94%,1200px);
+
+    padding:14px 22px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:1000;
+}
+
+.navbar.glass{
+    border-radius:999px;
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.card{
+    padding:24px;
+    margin:20px;
+}
+
+.card h2{
+    margin-bottom:12px;
+}
+
+.card p{
+    color:var(--text-secondary);
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+button,
+.glass-button{
+
+    padding:12px 24px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    color:white;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(20px);
+
+    transition:all .25s;
+}
+
+button:hover,
+.glass-button:hover{
+
+    background:var(--surface-hover);
+
+    transform:scale(1.03);
+}
+
+button:active,
+.glass-button:active{
+
+    transform:scale(.97);
+}
+
+/* ===========================
+   Inputs
+=========================== */
+
+input,
+textarea,
+select{
+
+    width:100%;
+
+    padding:14px;
+
+    background:rgba(255,255,255,.05);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:16px;
+
+    outline:none;
+
+    backdrop-filter:blur(18px);
+
+    transition:.25s;
+}
+
+input:focus,
+textarea:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 20px rgba(79,70,229,.4);
+}
+
+/* ===========================
+   Sidebar
+=========================== */
+
+.sidebar{
+
+    width:280px;
+
+    height:100vh;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    padding:24px;
+}
+
+/* ===========================
+   Floating Action Button
+=========================== */
+
+.fab{
+
+    position:fixed;
+
+    right:24px;
+
+    bottom:24px;
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+}
+
+/* ===========================
+   Modal
+=========================== */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(8px);
+}
+
+.modal-content{
+
+    width:min(600px,92%);
+
+    padding:32px;
+}
+
+/* ===========================
+   Animations
+=========================== */
+
+@keyframes float{
+
+    from{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+    to{
+        transform:translateY(0);
+    }
+}
+
+.float{
+
+    animation:float 4s ease-in-out infinite;
+}
+
+/* ===========================
+   Scrollbar
+=========================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:rgba(255,255,255,.15);
+
+    border-radius:999px;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:768px){
+
+    .navbar{
+
+        width:96%;
+    }
+
+    .sidebar{
+
+        width:100%;
+    }
+
+    .card{
+
+        margin:12px;
+    }
+}
