@@ -1,0 +1,31 @@
+# fastlane/Deliverfile
+# Aura Playground App Store configuration
+
+app_identifier ENV.fetch(
+  "FL_APP_IDENTIFIER",
+  "com.auraecosystem.playground"
+)
+
+app_version ENV["MARKETING_VERSION"] if ENV["MARKETING_VERSION"]
+
+skip_metadata false
+skip_screenshots false
+skip_binary_upload false
+
+force false
+
+automatic_release false
+
+submit_for_review false
+
+run_precheck_before_submit true
+
+precheck_include_in_app_purchases false
+
+overwrite_screenshots false
+
+edit_live false
+
+phased_release false
+
+reset_ratings false
