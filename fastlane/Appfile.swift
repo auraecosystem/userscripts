@@ -2,3 +2,4 @@
 # https://docs.fastlane.tools/advanced/#appfile
 
 app_identifier("com.userscripts.macos")
+
