@@ -1,89 +1,170 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
+# fastlane/Fastfile
+#
+# Aura Playground Fastlane Configuration
+# https://docs.fastlane.tools
+
+#############################################
+# Local Overrides
+#############################################
 
 LOCAL_FASTFILE = "local/Fastfile.local.rb"
-if File.file?(LOCAL_FASTFILE)
-	import(LOCAL_FASTFILE)
-end
+import(LOCAL_FASTFILE) if File.exist?(LOCAL_FASTFILE)
 
-PROJECT_PATH = "xcode/Userscripts.xcodeproj"
+#############################################
+# Project Configuration
+#############################################
 
-# https://docs.fastlane.tools/actions/is_ci/
-if is_ci
-	setup_ci
-	IS_CI = true
-else
-	IS_CI = false
-end
+PROJECT_PATH = ENV.fetch("PROJECT_PATH", "xcode/AuraPlayground.xcodeproj")
 
-# https://docs.fastlane.tools/actions/app_store_connect_api_key/
+IOS_SCHEME = ENV.fetch("IOS_SCHEME", "AuraPlayground-iOS")
+MAC_SCHEME = ENV.fetch("MAC_SCHEME", "AuraPlayground-macOS")
+
+IOS_OUTPUT = "AuraPlayground-iOS-Beta"
+MAC_OUTPUT = "AuraPlayground-macOS-Beta"
+
+OUTPUT_DIR = "build"
+
+QA_GROUP = ["QA"]
+
+#############################################
+# CI
+#############################################
+
+IS_CI = is_ci
+
+setup_ci if IS_CI
+
+#############################################
+# App Store Connect
+#############################################
+
 app_store_connect_api_key(
-	key_id: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
-	issuer_id: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-	key_content: ENV['APP_STORE_CONNECT_API_KEY_KEY'],
-	key_filepath: ENV['APP_STORE_CONNECT_API_KEY_KEY_FILEPATH'],
+  key_id: ENV["APP_STORE_CONNECT_API_KEY_KEY_ID"],
+  issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+  key_content: ENV["APP_STORE_CONNECT_API_KEY_KEY"],
+  key_filepath: ENV["APP_STORE_CONNECT_API_KEY_KEY_FILEPATH"],
 )
+
+#############################################
+# Helpers
+#############################################
+
+def marketing_version
+  ENV.fetch("MARKETING_VERSION", "1.0.0")
+end
+
+def next_build(platform)
+  latest_testflight_build_number(platform: platform) + 1
+rescue
+  1
+end
+
+def github_output(version)
+  return unless ENV["GITHUB_OUTPUT"]
+
+  File.open(ENV["GITHUB_OUTPUT"], "a") do |file|
+    file.puts("ver=#{version}")
+  end
+end
+
+#############################################
+# Default Platform
+#############################################
 
 default_platform(:ios)
 
-platform :ios do
-	lane :beta do
-		match
-		BUILD_NUMBER = latest_testflight_build_number(platform: "ios") + 1
-		File.open(ENV['GITHUB_OUTPUT'], 'a') do |file|
-			file.puts "ver=v#{ENV['MARKETING_VERSION']}(#{BUILD_NUMBER})"
-		end
-		build_app(
-			project: PROJECT_PATH,
-			scheme: "iOS",
-			xcargs: {
-				CURRENT_PROJECT_VERSION: BUILD_NUMBER.to_s,
-				MARKETING_VERSION: ENV['MARKETING_VERSION'],
-			},
-			output_directory: "build",
-			output_name: "Userscripts-iOS-Beta",
-			silent: IS_CI,
-		)
-		upload_to_testflight(
-			changelog: "#{ENV['GITHUB_REF_NAME']}",
-			distribute_external: true,
-			groups: ["QA"],
-		)
-	end
+#############################################
+# iOS
+#############################################
 
-	lane :release do
-		puts "ios release #{ENV['MARKETING_VERSION']}"
-		beta
-	end
+platform :ios do
+
+  desc "Build Aura Playground iOS Beta"
+
+  lane :beta do
+
+    ENV["FL_APP_IDENTIFIER"] ||= "com.auraecosystem.playground.ios"
+
+    match
+
+    build_number = next_build("ios")
+
+    github_output("v#{marketing_version}(#{build_number})")
+
+    build_app(
+      project: PROJECT_PATH,
+      scheme: IOS_SCHEME,
+
+      xcargs: {
+        CURRENT_PROJECT_VERSION: build_number.to_s,
+        MARKETING_VERSION: marketing_version,
+      },
+
+      output_directory: OUTPUT_DIR,
+      output_name: IOS_OUTPUT,
+      silent: IS_CI
+    )
+
+    upload_to_testflight(
+      changelog: ENV["GITHUB_REF_NAME"],
+      distribute_external: true,
+      groups: QA_GROUP
+    )
+
+  end
+
+  desc "Release Aura Playground iOS"
+
+  lane :release do
+    beta
+  end
+
 end
 
-platform :mac do
-	lane :beta do
-		match
-		BUILD_NUMBER = latest_testflight_build_number(platform: "osx") + 1
-		File.open(ENV['GITHUB_OUTPUT'], 'a') do |file|
-			file.puts "ver=v#{ENV['MARKETING_VERSION']}(#{BUILD_NUMBER})"
-		end
-		build_mac_app(
-			project: PROJECT_PATH,
-			scheme: "Mac",
-			xcargs: {
-				CURRENT_PROJECT_VERSION: BUILD_NUMBER.to_s,
-				MARKETING_VERSION: ENV['MARKETING_VERSION'],
-			},
-			output_directory: "build",
-			output_name: "Userscripts-Mac-Beta",
-			silent: IS_CI,
-		)
-		upload_to_testflight(
-			changelog: "#{ENV['GITHUB_REF_NAME']}",
-			distribute_external: true,
-			groups: ["QA"],
-		)
-	end
+#############################################
+# macOS
+#############################################
 
-	lane :release do
-		puts "mac release #{ENV['MARKETING_VERSION']}"
-		beta
-	end
+platform :mac do
+
+  desc "Build Aura Playground macOS Beta"
+
+  lane :beta do
+
+    ENV["FL_APP_IDENTIFIER"] ||= "com.auraecosystem.playground.macos"
+
+    match
+
+    build_number = next_build("osx")
+
+    github_output("v#{marketing_version}(#{build_number})")
+
+    build_mac_app(
+      project: PROJECT_PATH,
+      scheme: MAC_SCHEME,
+
+      xcargs: {
+        CURRENT_PROJECT_VERSION: build_number.to_s,
+        MARKETING_VERSION: marketing_version,
+      },
+
+      output_directory: OUTPUT_DIR,
+      output_name: MAC_OUTPUT,
+      silent: IS_CI
+    )
+
+    upload_to_testflight(
+      changelog: ENV["GITHUB_REF_NAME"],
+      distribute_external: true,
+      groups: QA_GROUP
+    )
+
+  end
+
+  desc "Release Aura Playground macOS"
+
+  lane :release do
+    beta
+  end
+
 end
