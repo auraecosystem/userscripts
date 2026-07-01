@@ -1,10 +1,10 @@
 
 // ==UserScript==
-// @name         Page Color Changer
+// @name         auraecosystem
 // @namespace    https://yourscripts.example/
 // @version      1.1
 // @description  Automatically changes background color on example.com
-// @author       Your Name
+// @author       seriki yakub
 // @match        https://example.com/*
 // @icon         https://example.com/favicon.ico
 // @grant        none
