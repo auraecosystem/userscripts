@@ -1,0 +1,44 @@
+{
+  // https://code.visualstudio.com/docs/editor/workspaces
+  "folders": [
+    {
+      "name": "Userscripts-JS",
+      "path": "."
+    },
+    {
+      "name": "Userscripts-Xcode",
+      "path": "xcode"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": false,
+      "**/.DS_Store": true,
+      "**/DerivedData": true,
+      "**/build": true
+    },
+    "search.exclude": {
+      "**/DerivedData": true,
+      "**/build": true
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "terminal.integrated.cwd": "${workspaceFolder:Userscripts-JS}",
+    "git.autofetch": true
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-typescript-next",
+      "github.vscode-github-actions",
+      "eamodio.gitlens",
+      "ms-vscode.makefile-tools",
+      "vadimcn.vscode-lldb"
+    ]
+  }
+}
